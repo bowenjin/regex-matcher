@@ -12,7 +12,7 @@ public class ParserTest{
     for(String s: validInputs){
       Tokenizer tokenizer = new Tokenizer(new ByteArrayInputStream(s.getBytes()));
       Parser parser = new Parser(tokenizer);
-      assertTrue(parser.parse());
+      assertNotNull(parser.parse());
     }
   }
 
@@ -22,7 +22,7 @@ public class ParserTest{
     for(String s: invalidInputs){
       Tokenizer tokenizer = new Tokenizer(new ByteArrayInputStream(s.getBytes()));
       Parser parser = new Parser(tokenizer);
-      assertFalse(parser.parse());
+      assertNull(parser.parse());
     }
   }
 }

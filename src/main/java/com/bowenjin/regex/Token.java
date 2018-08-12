@@ -12,9 +12,9 @@ class Token{
   }
 
   Type type;
-  String value;
+  char value;
   public Token(Type type, char value){
     this.type = type;
-    this.value = "" + value;
+    this.value = value;
   }
 }

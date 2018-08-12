@@ -30,13 +30,13 @@ public class TokenizerTest
       Tokenizer tokenizer = new Tokenizer(new ByteArrayInputStream(input.getBytes()));
       Token firstToken = tokenizer.nextToken();
       assertEquals(firstToken.type, Token.Type.CHAR); 
-      assertEquals(firstToken.value, "a");
+      assertEquals(firstToken.value, 'a');
       Token secondToken = tokenizer.nextToken();
       assertEquals(secondToken.type, Token.Type.CHAR);
-      assertEquals(secondToken.value, "^");    
+      assertEquals(secondToken.value, '^');    
       Token thirdToken = tokenizer.nextToken();
       assertEquals(thirdToken.type, Token.Type.CHAR);
-      assertEquals(thirdToken.value, "d");  
+      assertEquals(thirdToken.value, 'd');  
       assertEquals(tokenizer.nextToken().type, Token.Type.EOI);
     }
 }

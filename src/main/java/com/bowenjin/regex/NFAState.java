@@ -58,7 +58,7 @@ class NFAState{
   private static Set<NFAState> transition(char c, Set<NFAState> stateSet){
     Set<NFAState> newStateSet = new HashSet<NFAState>(5);
     for(NFAState state: stateSet){
-      if(state.edge == c){
+      if(state.edge == c || state.edge == '.'){
         newStateSet.add(state.child1);
       }
     }

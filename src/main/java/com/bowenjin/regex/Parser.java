@@ -45,67 +45,78 @@ class Parser{
     exception(t);
   }
 
-  boolean parse(){
+  NFAState parse(){
     try{
-      expr();
+      return expr();
     }catch(Exception e){
       System.out.println(e.getMessage());
-      return false;
+      return null;
     }
-    return true;
   }
 
-  private void expr(){
-    term();
-    termList();
+  private NFAState expr(){
+    NFAState newState = term();
+    return termList(newState);
   }
 
-  private void term(){
-    factor();
-    factorList();
+  private NFAState term(){
+    NFAState newState = factor();
+    return factorList(newState);
   }
   
-  private void termList(){
+  private NFAState termList(NFAState left){
+    NFAState right, newState;
     if(currentToken.type == Token.Type.OR){
       advance();
-      term();
-      termList();
+      right = term();
+      newState = NFABuilder.or(left, right);
+      return termList(newState);
     } 
+    return left;
   }
 
-  private void factor(){
+  private NFAState factor(){
+    NFAState newState, ret;
     switch(currentToken.type){
       case CHAR:
       case DOT:
+        newState = NFABuilder.regexChar(currentToken.value);
         advance();
-        factorTail();
+        ret = factorTail(newState);
         break;
       case LEFTPAREN:
         advance();
-        expr();
+        newState = expr();
         consume(Token.Type.RIGHTPAREN);
-        factorTail();
+        ret = factorTail(newState);
         break;
       default:
         throw exception(Token.Type.CHAR, Token.Type.DOT, Token.Type.LEFTPAREN);
-    }   
+    }
+    return ret;   
   }
   
-  private void factorList(){ 
+  private NFAState factorList(NFAState left){ 
+    NFAState right, newState;
     switch(currentToken.type){
       case CHAR:
       case DOT:
       case LEFTPAREN:
-        factor();
-        factorList();
-    }   
+        right = factor();
+        newState = NFABuilder.concat(left, right);
+        return factorList(newState);
+    }
+    return left;    
   }
 
-  private void factorTail(){
+  private NFAState factorTail(NFAState left){
+    NFAState newState;
     if(currentToken.type == Token.Type.STAR){
       advance();
-      factorTail();
+      newState = NFABuilder.star(left);
+      return factorTail(newState);
     }
+    return left;
   }
 
 }
