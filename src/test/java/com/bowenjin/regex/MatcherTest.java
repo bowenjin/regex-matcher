@@ -3,7 +3,7 @@ package com.bowenjin.regex;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
-public class NFATest{
+public class MatcherTest{
   @Test
   public void test0(){
    final String regex = "a";
@@ -14,18 +14,29 @@ public class NFATest{
 
   @Test
   public void test1(){
-   final String regex = "a*";
-   NFAState nfa = new Parser(new Tokenizer(regex)).parse();
-   assertTrue(nfa.traverse(""));
-   assertTrue(nfa.traverse("a"));
-   assertTrue(nfa.traverse("aa"));
-   assertFalse(nfa.traverse("b"));
-   assertFalse(nfa.traverse("bb"));
-   assertFalse(nfa.traverse("ab"));
+   final String regex = "abc";
+   Matcher matcher = new Matcher(regex);
+   assertTrue(matcher.match("abc"));
+   assertFalse(matcher.match(""));
+   assertFalse(matcher.match("a"));
+   assertFalse(matcher.match("ab"));
+   assertFalse(matcher.match("abcc"));
   }
 
   @Test
   public void test2(){
+   final String regex = "a*";
+   Matcher matcher = new Matcher(regex);
+   assertTrue(matcher.match(""));
+   assertTrue(matcher.match("a"));
+   assertTrue(matcher.match("aa"));
+   assertFalse(matcher.match("b"));
+   assertFalse(matcher.match("bb"));
+   assertFalse(matcher.match("ab"));
+  }
+
+  @Test
+  public void test3(){
     final String regex = "a*b*c*";
     final String [] validStrs = {"", "a", "b", "c", "ab", "bc", "abc", "aa", "bb", "cc", "aabbcc"}; 
     final String [] invalidStrs = {"d", "dabc", "adbc", "abdc", "abcd", "ad", "bd", "cd", "aad", "bbd", "ccd", "bac", "cab"};
@@ -33,7 +44,7 @@ public class NFATest{
   }
 
   @Test
-  public void test3(){
+  public void test4(){
     final String regex = "...";
     final String [] validStrs = {"abc", "%^&", "xyz"};
     final String [] invalidStrs = {"a", "ab", "abcd"};
@@ -41,15 +52,15 @@ public class NFATest{
   }
   
   @Test
-  public void test4(){
+  public void test5(){
     final String regex = "abc|dbc|xyz";
     final String [] validStrs = {"abc", "dbc", "xyz"};
-    final String [] invalidStrs = {"bc", "xy", "ab", "db"};
+    final String [] invalidStrs = {"bc", "xy", "ab", "db","abd", "aaa", "ddd", "xxx", "dba", "xyd"};
     testRegexOnStrings(regex, validStrs, invalidStrs);
   }
 
   @Test
-  public void test5(){
+  public void test6(){
     final String regex = "a*|b*|c*";
     final String [] validStrs = {"", "a", "b", "c", "aa", "bb", "cc"};
     final String [] invalidStrs = {"ab", "bc", "ac"};
@@ -57,12 +68,12 @@ public class NFATest{
   }
 
   private static void testRegexOnStrings(String regex, String [] validStrs, String [] invalidStrs){
-    NFAState nfa = new Parser(new Tokenizer(regex)).parse();
+    Matcher matcher = new Matcher(regex);
     for(String validStr: validStrs){
-      assertTrue(nfa.traverse(validStr));
+      assertTrue(matcher.match(validStr));
     }
     for(String invalidStr: invalidStrs){
-      assertFalse(nfa.traverse(invalidStr));
+      assertFalse(matcher.match(invalidStr));
     }
   }  
 }

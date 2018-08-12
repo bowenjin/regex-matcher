@@ -41,13 +41,16 @@ class Parser{
   private void consume(Token.Type t){
     if(currentToken.type == t){
       advance();
+    }else {
+      throw exception(t);
     }
-    exception(t);
   }
 
   NFAState parse(){
     try{
-      return expr();
+      NFAState start = expr();
+      consume(Token.Type.EOI);
+      return start;
     }catch(Exception e){
       System.out.println(e.getMessage());
       return null;
@@ -69,7 +72,7 @@ class Parser{
     if(currentToken.type == Token.Type.OR){
       advance();
       right = term();
-      newState = NFABuilder.or(left, right);
+      newState = NFAState.or(left, right);
       return termList(newState);
     } 
     return left;
@@ -80,7 +83,7 @@ class Parser{
     switch(currentToken.type){
       case CHAR:
       case DOT:
-        newState = NFABuilder.regexChar(currentToken.value);
+        newState = NFAState.regexChar(currentToken.value);
         advance();
         ret = factorTail(newState);
         break;
@@ -103,7 +106,7 @@ class Parser{
       case DOT:
       case LEFTPAREN:
         right = factor();
-        newState = NFABuilder.concat(left, right);
+        newState = NFAState.concat(left, right);
         return factorList(newState);
     }
     return left;    
@@ -113,7 +116,7 @@ class Parser{
     NFAState newState;
     if(currentToken.type == Token.Type.STAR){
       advance();
-      newState = NFABuilder.star(left);
+      newState = NFAState.star(left);
       return factorTail(newState);
     }
     return left;
