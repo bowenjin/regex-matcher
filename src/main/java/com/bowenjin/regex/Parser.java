@@ -6,12 +6,12 @@ class Parser{
   private Tokenizer tokenizer;
   private Token currentToken;
 
-  Parser(Tokenizer tokenizer){
+  Parser(Tokenizer tokenizer) throws InvalidRegexException{
     this.tokenizer = tokenizer;
     try{
       currentToken = tokenizer.nextToken();
     }catch(IOException e){
-      throw new RuntimeException(e);
+      throw new InvalidRegexException(e);
     }
   }
 
@@ -19,15 +19,15 @@ class Parser{
     try{
       currentToken = tokenizer.nextToken();
     }catch(IOException e){
-      throw new RuntimeException(e);
+      throw new InvalidRegexException(e);
     }
   }
 
-  private RuntimeException exception(String expected, String found){
-    return new RuntimeException("Expected " + expected + ", but found " + found);
+  private InvalidRegexException exception(String expected, String found){
+    return new InvalidRegexException("Expected " + expected + ", but found " + found);
   }
 
-  private RuntimeException exception(Token.Type... expectedTokenTypes){
+  private InvalidRegexException exception(Token.Type... expectedTokenTypes){
     StringBuilder sb = new StringBuilder();
     for(int i = 0; i < expectedTokenTypes.length; i++){
       sb.append(expectedTokenTypes[i].name());
@@ -46,7 +46,7 @@ class Parser{
     }
   }
 
-  NFAState parse(){
+  NFAState parse() throws InvalidRegexException{
     try{
       NFAState start = expr();
       consume(Token.Type.EOI);

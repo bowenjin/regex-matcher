@@ -7,7 +7,7 @@ public class Matcher{
   List<NFAState> nextStates = new ArrayList<>();
   NFAState nfa;
   
-  public Matcher(String regex){
+  public Matcher(String regex) throws InvalidRegexException{
     this.nfa = new Parser(new Tokenizer(regex)).parse();
   }
   
@@ -36,7 +36,7 @@ public class Matcher{
     }
   }
   
-  private void lambdaClosure(){
+  protected void lambdaClosure(){
     int size = currentStates.size();
     for(int i = 0; i < size; i++){
       NFAState state = currentStates.get(i);
@@ -44,7 +44,7 @@ public class Matcher{
     }
   }
 
-  private void transition(char c){
+  protected void transition(char c){
     nextStates.clear();
     for(NFAState state: currentStates){
       if(state.label1 == c || state.label1 == '.'){
