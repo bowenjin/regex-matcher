@@ -1,17 +1,22 @@
 package com.bowenjin.regex;
 
+import java.io.Reader;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.io.InputStream;
 import java.io.IOException;
 
 /**
  * Regex Tokenizer
  */
-public class Tokenizer 
+class Tokenizer 
 {
-  InputStreamReader input;
-  public Tokenizer(InputStream input){
+  Reader input;
+  Tokenizer(InputStream input){
     this.input = new InputStreamReader(input); 
+  }
+  Tokenizer(String input){
+    this.input = new StringReader(input);
   }
   Token nextToken() throws IOException{
     Token.Type type;
