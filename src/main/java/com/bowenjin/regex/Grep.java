@@ -3,6 +3,7 @@ package com.bowenjin.regex;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 
 /**
  * An implementation of the UNIX grep program in Java.
@@ -15,32 +16,26 @@ public class Grep{
     }
     String regex = args[0];
     String fileName = args[1];
-    BufferedReader bufferedReader;
-    GrepMatcher matcher;
     try{
-      bufferedReader = new BufferedReader(new FileReader(fileName));
+      grep(regex, fileName, System.out);
     }catch(IOException e){
       System.err.println(e.getMessage());
       return;
     }
-    //try{
-      matcher = new Matcher(".*" + regex + ".*");
-    /*}catch(InvalidRegexException e){
-      System.err.println("Invalid regex: " + regex);
-      System.err.println(e.getMessage());
-      return;
-    }*/
-
-    String line;
-  nextLine:
-    while((line = bufferedReader.readLine()) != null){
-      for(int i = 0; i < line.length(); i++){
-        int endIndex;
-        if((endIndex = matcher.matchIndex(line.substring(i))) != -1){
-          System.out.println(line.substring(0, i) + "<match>" + line.substring(i, endIndex) + "</match>" + line.substring(endIndex));
-          continue nextLine;
-        } 
-      } 
-    }
   }
+
+  static public void grep(String regex, String fileName, PrintStream out) throws IOException{
+    BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+    grep(regex, bufferedReader, out);
+  }
+
+  public static void grep(String regex, BufferedReader bufferedReader, PrintStream out) throws IOException{
+    Matcher matcher = new Matcher(".*" + regex + ".*");
+    String line;
+    while((line = bufferedReader.readLine()) != null){
+      if(matcher.match(line)){
+        out.println(line);
+      }
+    }
+  } 
 }
