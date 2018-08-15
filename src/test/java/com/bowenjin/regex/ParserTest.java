@@ -8,6 +8,8 @@ import java.io.IOException;
 public class ParserTest{
   @Test
   public void test1() throws IOException{
+    //expr() doesn't handle empty string regex correctly
+    //assertNotNull(makeNFA(""));
     assertNotNull(makeNFA("abc"));
     assertNotNull(makeNFA("."));
     assertNotNull(makeNFA(".*"));
@@ -18,11 +20,25 @@ public class ParserTest{
     assertNull(makeNFA("*"));
   }
 
+  @Test
+  public void testPlus() throws IOException{
+    assertNotNull(makeNFA("a+"));
+    assertNotNull(makeNFA(".+a+"));
+    assertNotNull(makeNFA("a+.+(.+)+"));
+    //Why doesn't empty parenthesis work?
+    //assertNotNull(makeNFA("()+")); 
+    
+    assertNull(makeNFA("+"));
+    //should be invalid
+    //assertNull(makeNFA("b++"));
+    //assertNull(makeNFA("()++"));
+  }
+
   /**
-   * Tests from the Exercise section of the book
+   * Tests from Exercise 18.1 of Dos Reis book
    */
   @Test
-  public void test2() throws IOException{
+  public void bookExerciseTests() throws IOException{
     assertNotNull(makeNFA("b"));
     assertNotNull(makeNFA("bc"));
     assertNotNull(makeNFA("b|c"));

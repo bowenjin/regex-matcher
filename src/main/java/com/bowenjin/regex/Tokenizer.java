@@ -40,6 +40,9 @@ class Tokenizer
       case ')':
         type = Token.Type.RIGHTPAREN;
         break;
+      case '+':
+        type = Token.Type.PLUS;
+        break;
       default:
         type = Token.Type.CHAR;       
     }

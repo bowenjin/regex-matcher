@@ -114,12 +114,16 @@ class Parser{
 
   private NFAState factorTail(NFAState left){
     NFAState newState;
-    if(currentToken.type == Token.Type.STAR){
-      advance();
-      newState = NFAState.star(left);
-      return factorTail(newState);
-    }
+    switch(currentToken.type){
+      case STAR:
+        advance();
+        newState = NFAState.star(left);
+        return factorTail(newState);
+      case PLUS:
+        advance();
+        newState = NFAState.plus(left);
+        return factorTail(newState);
+    } 
     return left;
   }
-
 }

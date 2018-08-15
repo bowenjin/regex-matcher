@@ -8,7 +8,8 @@ class Token{
     OR,
     STAR,
     LEFTPAREN,
-    RIGHTPAREN;
+    RIGHTPAREN,
+    PLUS,
   }
 
   Type type;

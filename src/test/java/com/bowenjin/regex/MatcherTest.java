@@ -11,6 +11,16 @@ public class MatcherTest{
    final String [] invalidStrs = {"b"};
    testRegexOnStrings(regex, validStrs, invalidStrs); 
   }
+  
+  /**
+   * Tests from the book Algorithms 4th edition by Robert Sedgewick, in Chapter 5.4 page 789
+   */
+  @Test
+  public void sedgewickTests(){
+    testRegexOnStrings("(A|B)(C|D)", new String[]{"AC", "AD", "BC", "BD"}, new String[]{"AB", "BA", "CD", "DC"});
+    testRegexOnStrings("A(B|C)*D", new String[]{"AD", "ABD", "ACD", "ABCCBD"}, new String[]{"BCD", "ADD", "ABCBC"});
+    testRegexOnStrings("A*|(A*BA*BA*)*", new String[]{"AAA", "BBAABB", "BABAAA"}, new String[]{"ABA", "BBB", "BABBAAA"});
+  }
 
   @Test
   public void test1(){
@@ -65,6 +75,28 @@ public class MatcherTest{
     final String [] validStrs = {"", "a", "b", "c", "aa", "bb", "cc"};
     final String [] invalidStrs = {"ab", "bc", "ac"};
     testRegexOnStrings(regex, validStrs, invalidStrs);
+  }
+  
+  @Test
+  public void testPlus(){
+    Matcher matcher1 = new Matcher("a+");
+    assertTrue(matcher1.match("a"));
+    assertTrue(matcher1.match("aa"));
+    assertTrue(matcher1.match("aaa"));
+    assertFalse(matcher1.match(""));
+    assertFalse(matcher1.match("ab"));
+    assertFalse(matcher1.match("ba"));
+   
+    Matcher matcher2 = new Matcher(".+"); 
+    assertTrue(matcher2.match("a"));
+    assertTrue(matcher2.match("ab"));
+    assertFalse(matcher2.match(""));
+    
+    Matcher matcher3 = new Matcher("(a+b+c+)+"); 
+    assertTrue(matcher3.match("abc"));
+    assertTrue(matcher3.match("aabbcc"));
+    assertTrue(matcher3.match("abcabcaabbcc"));
+    assertFalse(matcher3.match("abcabcaabbccb"));
   }
 
   private static void testRegexOnStrings(String regex, String [] validStrs, String [] invalidStrs){

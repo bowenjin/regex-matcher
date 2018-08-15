@@ -10,33 +10,23 @@ import java.io.ByteArrayInputStream;
 public class TokenizerTest 
 {
     @Test
-    public void test1() throws IOException{
-        String input = ".a*b()|";
+    public void testAllTokens() throws IOException{
+        String input = ".a*b()|+";
         Tokenizer tokenizer = new Tokenizer(new ByteArrayInputStream(input.getBytes()));
-        assertEquals(tokenizer.nextToken().type, Token.Type.DOT);
-        assertEquals(tokenizer.nextToken().type, Token.Type.CHAR);
-        assertEquals(tokenizer.nextToken().type, Token.Type.STAR);
-        assertEquals(tokenizer.nextToken().type, Token.Type.CHAR);
-	assertEquals(tokenizer.nextToken().type, Token.Type.LEFTPAREN);
-        assertEquals(tokenizer.nextToken().type, Token.Type.RIGHTPAREN);
-        assertEquals(tokenizer.nextToken().type, Token.Type.OR);
-        assertEquals(tokenizer.nextToken().type, Token.Type.EOI);
-        assertEquals(tokenizer.nextToken().type, Token.Type.EOI);
+        assertToken(tokenizer.nextToken(), Token.Type.DOT, '.');
+        assertToken(tokenizer.nextToken(), Token.Type.CHAR, 'a');
+        assertToken(tokenizer.nextToken(), Token.Type.STAR, '*');
+        assertToken(tokenizer.nextToken(), Token.Type.CHAR, 'b');
+	assertToken(tokenizer.nextToken(), Token.Type.LEFTPAREN, '(');
+        assertToken(tokenizer.nextToken(), Token.Type.RIGHTPAREN, ')');
+        assertToken(tokenizer.nextToken(), Token.Type.OR, '|');
+        assertToken(tokenizer.nextToken(), Token.Type.PLUS, '+');
+        assertToken(tokenizer.nextToken(), Token.Type.EOI, (char)-1);
+        assertToken(tokenizer.nextToken(), Token.Type.EOI, (char)-1);
     }
     
-    @Test
-    public void test2() throws IOException{
-      String input = "a^d";
-      Tokenizer tokenizer = new Tokenizer(new ByteArrayInputStream(input.getBytes()));
-      Token firstToken = tokenizer.nextToken();
-      assertEquals(firstToken.type, Token.Type.CHAR); 
-      assertEquals(firstToken.value, 'a');
-      Token secondToken = tokenizer.nextToken();
-      assertEquals(secondToken.type, Token.Type.CHAR);
-      assertEquals(secondToken.value, '^');    
-      Token thirdToken = tokenizer.nextToken();
-      assertEquals(thirdToken.type, Token.Type.CHAR);
-      assertEquals(thirdToken.value, 'd');  
-      assertEquals(tokenizer.nextToken().type, Token.Type.EOI);
+    private void assertToken(Token token, Token.Type type, char value){
+      assertEquals(type, token.type);
+      assertEquals(value, token.value);
     }
 }

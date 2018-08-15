@@ -69,4 +69,19 @@ class NFAState{
     
     return start;
   }
+  
+  static NFAState plus(NFAState left){
+    NFAState start = new NFAState();
+    NFAState end = new NFAState();
+    start.endState = end;
+    
+    start.child1 = left;
+    start.label1 = 0;
+    
+    left.endState.child1 = start;
+    left.endState.label1 = 0; 
+    left.endState.child2 = end;
+  
+    return start;
+  }
 }
