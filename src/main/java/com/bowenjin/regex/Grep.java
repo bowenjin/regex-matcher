@@ -24,7 +24,7 @@ public class Grep{
       return;
     }
     //try{
-      matcher = new GrepMatcher(regex);
+      matcher = new Matcher(".*" + regex + ".*");
     /*}catch(InvalidRegexException e){
       System.err.println("Invalid regex: " + regex);
       System.err.println(e.getMessage());
