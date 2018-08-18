@@ -59,6 +59,10 @@ public class ParserTest{
   }
 
   static NFAState makeNFA(String regex){
-    return new Parser(new Tokenizer(new ByteArrayInputStream(regex.getBytes()))).parse(); 
+    try{
+      return new Parser(new Tokenizer(regex)).parse(); 
+    }catch(InvalidRegexException e){
+      return null;
+    }
   }
 }

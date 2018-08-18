@@ -1,6 +1,6 @@
 package com.bowenjin.regex;
 
-class InvalidRegexException extends RuntimeException{
+public class InvalidRegexException extends Exception{
   InvalidRegexException(Exception e){
     super(e);
   }

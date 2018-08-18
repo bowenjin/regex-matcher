@@ -12,16 +12,23 @@ import java.io.IOException;
 class Tokenizer 
 {
   Reader input;
-  Tokenizer(InputStream input){
-    this.input = new InputStreamReader(input); 
-  }
   Tokenizer(String input){
     this.input = new StringReader(input);
   }
-  Token nextToken() throws IOException{
+  
+  //catch the IOException, should never be thrown because we read from a String
+  private int readInput(){
+    try{
+      return input.read();
+    }catch(IOException e){
+      throw new RuntimeException(e);
+    }
+  }
+
+  Token nextToken(){
     Token.Type type;
     int c;
-    switch(c = input.read()){
+    switch(c = readInput()){
       case -1:
         type = Token.Type.EOI;
         break;

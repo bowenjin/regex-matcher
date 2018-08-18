@@ -1,4 +1,7 @@
-package com.bowenjin.regex;
+package com.bowenjin.regex.grep;
+
+import com.bowenjin.regex.InvalidRegexException;
+import com.bowenjin.regex.Matcher;
 
 /**
  * GrepMatcher is used by Grep inplace of a normal
@@ -16,23 +19,23 @@ class GrepMatcher extends Matcher{
    * @param str String to be searched for matches
    * @return the end index of the match
    */	
-  int matchIndex(String str){
+  private int matchIndex(String str){
     for(int i = 0; i < str.length(); i++){
       lambdaClosure();
-      if(currentStates.contains(nfa.endState)){
+      if(hasReachedAcceptState()){
         return i;
       }
       transition(str.charAt(i));
     }
     lambdaClosure();
-    if(currentStates.contains(nfa.endState)){
+    if(hasReachedAcceptState()){
       return str.length();
     }
     return -1;
   }
  
   @Override
-  public boolean match(String str){
+  protected boolean matchInternal(String str){
     return matchIndex(str) != -1;
   }
 }

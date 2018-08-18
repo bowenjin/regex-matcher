@@ -1,5 +1,7 @@
-package com.bowenjin.regex;
+package com.bowenjin.regex.grep;
 
+import com.bowenjin.regex.Matcher;
+import com.bowenjin.regex.InvalidRegexException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,15 +23,18 @@ public class Grep{
     }catch(IOException e){
       System.err.println(e.getMessage());
       return;
+    }catch(InvalidRegexException e){
+      System.out.println(e.getMessage());
+      return;
     }
   }
 
-  static public void grep(String regex, String fileName, PrintStream out) throws IOException{
+  static public void grep(String regex, String fileName, PrintStream out) throws IOException, InvalidRegexException{
     BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
     grep(regex, bufferedReader, out);
   }
 
-  public static void grep(String regex, BufferedReader bufferedReader, PrintStream out) throws IOException{
+  public static void grep(String regex, BufferedReader bufferedReader, PrintStream out) throws IOException, InvalidRegexException{
     Matcher matcher = new Matcher(".*" + regex + ".*");
     String line;
     while((line = bufferedReader.readLine()) != null){

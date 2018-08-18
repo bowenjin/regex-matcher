@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class MatcherTest{
   @Test
-  public void test0(){
+  public void test0() throws InvalidRegexException{
    final String regex = "a";
    final String [] validStrs = {"a"};
    final String [] invalidStrs = {"b"};
@@ -16,14 +16,14 @@ public class MatcherTest{
    * Tests from the book Algorithms 4th edition by Robert Sedgewick, in Chapter 5.4 page 789
    */
   @Test
-  public void sedgewickTests(){
+  public void sedgewickTests() throws InvalidRegexException{
     testRegexOnStrings("(A|B)(C|D)", new String[]{"AC", "AD", "BC", "BD"}, new String[]{"AB", "BA", "CD", "DC"});
     testRegexOnStrings("A(B|C)*D", new String[]{"AD", "ABD", "ACD", "ABCCBD"}, new String[]{"BCD", "ADD", "ABCBC"});
     testRegexOnStrings("A*|(A*BA*BA*)*", new String[]{"AAA", "BBAABB", "BABAAA"}, new String[]{"ABA", "BBB", "BABBAAA"});
   }
 
   @Test
-  public void test1(){
+  public void test1() throws InvalidRegexException{
    final String regex = "abc";
    Matcher matcher = new Matcher(regex);
    assertTrue(matcher.match("abc"));
@@ -34,7 +34,7 @@ public class MatcherTest{
   }
 
   @Test
-  public void test2(){
+  public void test2() throws InvalidRegexException{
    final String regex = "a*";
    Matcher matcher = new Matcher(regex);
    assertTrue(matcher.match(""));
@@ -46,7 +46,7 @@ public class MatcherTest{
   }
 
   @Test
-  public void test3(){
+  public void test3() throws InvalidRegexException{
     final String regex = "a*b*c*";
     final String [] validStrs = {"", "a", "b", "c", "ab", "bc", "abc", "aa", "bb", "cc", "aabbcc"}; 
     final String [] invalidStrs = {"d", "dabc", "adbc", "abdc", "abcd", "ad", "bd", "cd", "aad", "bbd", "ccd", "bac", "cab"};
@@ -54,7 +54,7 @@ public class MatcherTest{
   }
 
   @Test
-  public void test4(){
+  public void test4() throws InvalidRegexException{
     final String regex = "...";
     final String [] validStrs = {"abc", "%^&", "xyz"};
     final String [] invalidStrs = {"a", "ab", "abcd"};
@@ -62,7 +62,7 @@ public class MatcherTest{
   }
   
   @Test
-  public void test5(){
+  public void test5() throws InvalidRegexException{
     final String regex = "abc|dbc|xyz";
     final String [] validStrs = {"abc", "dbc", "xyz"};
     final String [] invalidStrs = {"bc", "xy", "ab", "db","abd", "aaa", "ddd", "xxx", "dba", "xyd"};
@@ -70,7 +70,7 @@ public class MatcherTest{
   }
 
   @Test
-  public void test6(){
+  public void test6() throws InvalidRegexException{
     final String regex = "a*|b*|c*";
     final String [] validStrs = {"", "a", "b", "c", "aa", "bb", "cc"};
     final String [] invalidStrs = {"ab", "bc", "ac"};
@@ -78,7 +78,7 @@ public class MatcherTest{
   }
   
   @Test
-  public void testPlus(){
+  public void testPlus() throws InvalidRegexException{
     Matcher matcher1 = new Matcher("a+");
     assertTrue(matcher1.match("a"));
     assertTrue(matcher1.match("aa"));
@@ -100,7 +100,7 @@ public class MatcherTest{
   }
   
   @Test
-  public void testQuestion(){
+  public void testQuestion() throws InvalidRegexException{
     Matcher matcher1 = new Matcher("a?");
     assertTrue(matcher1.match(""));
     assertTrue(matcher1.match("a")); 
@@ -120,7 +120,7 @@ public class MatcherTest{
     assertFalse(matcher3.match("aac"));
   }
 
-  private static void testRegexOnStrings(String regex, String [] validStrs, String [] invalidStrs){
+  private static void testRegexOnStrings(String regex, String [] validStrs, String [] invalidStrs) throws InvalidRegexException{
     Matcher matcher = new Matcher(regex);
     for(String validStr: validStrs){
       assertTrue(matcher.match(validStr));

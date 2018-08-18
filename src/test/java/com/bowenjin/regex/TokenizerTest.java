@@ -12,7 +12,7 @@ public class TokenizerTest
     @Test
     public void testAllTokens() throws IOException{
         String input = ".a*b()|+?";
-        Tokenizer tokenizer = new Tokenizer(new ByteArrayInputStream(input.getBytes()));
+        Tokenizer tokenizer = new Tokenizer(input);
         assertToken(tokenizer.nextToken(), Token.Type.DOT, '.');
         assertToken(tokenizer.nextToken(), Token.Type.CHAR, 'a');
         assertToken(tokenizer.nextToken(), Token.Type.STAR, '*');
