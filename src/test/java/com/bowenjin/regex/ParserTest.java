@@ -9,13 +9,12 @@ public class ParserTest{
   @Test
   public void test1() throws IOException{
     //expr() doesn't handle empty string regex correctly
-    //assertNotNull(makeNFA(""));
+    assertNotNull(makeNFA(""));
     assertNotNull(makeNFA("abc"));
     assertNotNull(makeNFA("."));
     assertNotNull(makeNFA(".*"));
     assertNotNull(makeNFA(".*a*"));
     assertNotNull(makeNFA("c*.*.*a*"));
-    
     assertNull(makeNFA("|"));
     assertNull(makeNFA("*"));
   }
@@ -25,15 +24,23 @@ public class ParserTest{
     assertNotNull(makeNFA("a+"));
     assertNotNull(makeNFA(".+a+"));
     assertNotNull(makeNFA("a+.+(.+)+"));
-    //Why doesn't empty parenthesis work?
-    //assertNotNull(makeNFA("()+")); 
+    
+    assertNotNull(makeNFA("()+")); 
     
     assertNull(makeNFA("+"));
-    //should be invalid
-    //assertNull(makeNFA("b++"));
-    //assertNull(makeNFA("()++"));
+    assertNull(makeNFA("b++"));
+    assertNull(makeNFA("()++"));
   }
-
+  
+  @Test
+  public void testQuestion() throws IOException{
+    assertNotNull(makeNFA("a?"));
+    assertNotNull(makeNFA(".?a?"));
+    assertNotNull(makeNFA("((a?)?)?"));
+    
+    assertNull(makeNFA("?"));
+    assertNull(makeNFA("b??"));
+  }
   /**
    * Tests from Exercise 18.1 of Dos Reis book
    */

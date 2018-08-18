@@ -10,6 +10,7 @@ class Token{
     LEFTPAREN,
     RIGHTPAREN,
     PLUS,
+    QUESTION,
   }
 
   Type type;

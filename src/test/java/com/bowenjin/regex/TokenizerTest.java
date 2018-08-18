@@ -11,7 +11,7 @@ public class TokenizerTest
 {
     @Test
     public void testAllTokens() throws IOException{
-        String input = ".a*b()|+";
+        String input = ".a*b()|+?";
         Tokenizer tokenizer = new Tokenizer(new ByteArrayInputStream(input.getBytes()));
         assertToken(tokenizer.nextToken(), Token.Type.DOT, '.');
         assertToken(tokenizer.nextToken(), Token.Type.CHAR, 'a');
@@ -21,6 +21,7 @@ public class TokenizerTest
         assertToken(tokenizer.nextToken(), Token.Type.RIGHTPAREN, ')');
         assertToken(tokenizer.nextToken(), Token.Type.OR, '|');
         assertToken(tokenizer.nextToken(), Token.Type.PLUS, '+');
+        assertToken(tokenizer.nextToken(), Token.Type.QUESTION, '?');
         assertToken(tokenizer.nextToken(), Token.Type.EOI, (char)-1);
         assertToken(tokenizer.nextToken(), Token.Type.EOI, (char)-1);
     }

@@ -58,8 +58,16 @@ class Parser{
   }
 
   private NFAState expr(){
-    NFAState newState = term();
-    return termList(newState);
+    switch(currentToken.type){
+      
+      case RIGHTPAREN: 
+      case EOI:
+        return NFAState.regexChar((char)0);
+      
+      default:
+        NFAState newState = term();
+        return termList(newState);
+    }
   }
 
   private NFAState term(){
@@ -113,17 +121,21 @@ class Parser{
   }
 
   private NFAState factorTail(NFAState left){
-    NFAState newState;
+    NFAState newState = left;
     switch(currentToken.type){
       case STAR:
         advance();
         newState = NFAState.star(left);
-        return factorTail(newState);
+        break;
       case PLUS:
         advance();
         newState = NFAState.plus(left);
-        return factorTail(newState);
+        break;
+      case QUESTION:
+        advance();
+        newState = NFAState.question(left);
+        break;
     } 
-    return left;
+    return newState;
   }
 }

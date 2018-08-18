@@ -98,6 +98,27 @@ public class MatcherTest{
     assertTrue(matcher3.match("abcabcaabbcc"));
     assertFalse(matcher3.match("abcabcaabbccb"));
   }
+  
+  @Test
+  public void testQuestion(){
+    Matcher matcher1 = new Matcher("a?");
+    assertTrue(matcher1.match(""));
+    assertTrue(matcher1.match("a")); 
+    assertFalse(matcher1.match("aa"));
+    assertFalse(matcher1.match("b"));
+   
+    Matcher matcher2 = new Matcher("a.?"); 
+    assertTrue(matcher2.match("a"));
+    assertTrue(matcher2.match("ab"));
+    assertFalse(matcher2.match(""));
+    assertFalse(matcher2.match("aaa"));
+    
+    Matcher matcher3 = new Matcher("a?b?c?"); 
+    assertTrue(matcher3.match("abc"));
+    assertTrue(matcher3.match(""));
+    assertTrue(matcher3.match("bc"));
+    assertFalse(matcher3.match("aac"));
+  }
 
   private static void testRegexOnStrings(String regex, String [] validStrs, String [] invalidStrs){
     Matcher matcher = new Matcher(regex);

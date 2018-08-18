@@ -43,6 +43,9 @@ class Tokenizer
       case '+':
         type = Token.Type.PLUS;
         break;
+      case '?':
+        type = Token.Type.QUESTION;
+        break;
       default:
         type = Token.Type.CHAR;       
     }

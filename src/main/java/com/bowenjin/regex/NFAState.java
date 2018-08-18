@@ -84,4 +84,19 @@ class NFAState{
   
     return start;
   }
+
+  static NFAState question(NFAState left){
+    NFAState start = new NFAState();
+    NFAState end = new NFAState();
+    start.endState = end; 
+
+    start.child1 = left;
+    start.label1 = 0;
+    start.child2 = end;
+    
+    left.endState.child1 = end;
+    left.endState.label1 = 0;
+
+    return start;
+  }
 }
