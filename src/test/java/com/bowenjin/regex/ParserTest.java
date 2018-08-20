@@ -10,6 +10,10 @@ public class ParserTest{
   public void test1() throws IOException{
     //expr() doesn't handle empty string regex correctly
     assertNotNull(makeNFA(""));
+    assertNotNull(makeNFA("()"));
+    assertNotNull(makeNFA("a"));
+    assertNotNull(makeNFA("a|b"));
+    assertNotNull(makeNFA("a*"));
     assertNotNull(makeNFA("abc"));
     assertNotNull(makeNFA("."));
     assertNotNull(makeNFA(".*"));

@@ -31,6 +31,14 @@ public class MatcherTest{
    assertFalse(matcher.match("a"));
    assertFalse(matcher.match("ab"));
    assertFalse(matcher.match("abcc"));
+
+   matcher = new Matcher("");
+   assertTrue(matcher.match(""));
+   assertFalse(matcher.match("a"));
+  
+   matcher = new Matcher("()");
+   assertTrue(matcher.match(""));
+   assertFalse(matcher.match("a"));
   }
 
   @Test
