@@ -19,8 +19,7 @@ public class Matcher{
    * @param str the string to match against this regex
    */
   public final boolean match(String str){
-    currentStates.clear();
-    currentStates.add(nfa);
+    reset();
     return matchInternal(str);
   }
   
@@ -45,6 +44,15 @@ public class Matcher{
    */
   protected final boolean hasReachedAcceptState(){
     return currentStates.contains(nfa.endState);
+  }
+  
+  /**
+   * Resets the state of the Matcher to its state right after
+   * it was created.
+   */
+  protected final void reset(){
+    currentStates.clear();
+    currentStates.add(nfa);
   }
 
   private void lambdaClosureHelper(NFAState state){
