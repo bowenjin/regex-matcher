@@ -50,7 +50,7 @@ public class Matcher{
    * Resets the state of the Matcher to its state right after
    * it was created.
    */
-  protected final void reset(){
+  public final void reset(){
     currentStates.clear();
     currentStates.add(nfa);
   }
