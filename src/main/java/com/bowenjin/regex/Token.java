@@ -11,6 +11,9 @@ class Token{
     RIGHTPAREN,
     PLUS,
     QUESTION,
+    LEFTBRACKET,
+    RIGHTBRACKET,
+    DASH
   }
 
   Type type;

@@ -53,6 +53,15 @@ class Tokenizer
       case '?':
         type = Token.Type.QUESTION;
         break;
+      case '[':
+        type = Token.Type.LEFTBRACKET;
+        break;
+      case ']':
+        type = Token.Type.RIGHTBRACKET;
+        break;
+      case '-':
+        type = Token.Type.DASH;
+        break;
       default:
         type = Token.Type.CHAR;       
     }

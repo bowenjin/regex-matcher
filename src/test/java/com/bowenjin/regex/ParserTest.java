@@ -45,6 +45,35 @@ public class ParserTest{
     assertNull(makeNFA("?"));
     assertNull(makeNFA("b??"));
   }
+
+  @Test
+  public void testSet() throws IOException{
+    System.out.println("starting testSet()");
+    assertNotNull(makeNFA("[abcd]*"));
+    assertNotNull(makeNFA("[0a!@#$%]"));
+  }
+
+  @Test
+  public void testRange() throws IOException{
+    System.out.println("starting testRange()");
+    assertNotNull(makeNFA("[a-z]"));
+    assertNotNull(makeNFA("[0-9]"));
+    assertNotNull(makeNFA("[A-Z0-9a-z]"));
+    assertNotNull(makeNFA("[0-z]"));
+    assertNotNull(makeNFA("[abc-hij]"));
+    assertNotNull(makeNFA("[abcd-ghij]"));
+    
+    assertNull(makeNFA("[z-a]")); 
+    assertNull(makeNFA("[^9-0]"));
+  }
+
+  /*@Test
+  public void testComplement() throws IOException{
+    assertNotNull(makeNFA("[^0-9]"));
+    assertNotNull(makeNFA("[^aa-z0-9]"));
+    assertNotNull(makeNFA("[^^abcde]"));
+  }*/
+
   /**
    * Tests from Exercise 18.1 of Dos Reis book
    */

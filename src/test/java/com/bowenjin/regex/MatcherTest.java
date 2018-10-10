@@ -128,6 +128,55 @@ public class MatcherTest{
     assertFalse(matcher3.match("aac"));
   }
 
+  @Test
+  public void testSet() throws InvalidRegexException{
+    Matcher matcher1 = new Matcher("[abc]+");
+    assertFalse(matcher1.match(""));
+    assertTrue(matcher1.match("a"));
+    assertTrue(matcher1.match("b"));
+    assertTrue(matcher1.match("c"));
+    assertFalse(matcher1.match("d"));
+    assertTrue(matcher1.match("abc"));
+    assertFalse(matcher1.match("abcd"));
+
+    Matcher matcher2 = new Matcher("[(a)*?+()*|]");
+    assertTrue(matcher2.match("a"));
+    assertTrue(matcher2.match("?"));
+    assertTrue(matcher2.match("+"));
+    assertTrue(matcher2.match("("));
+    assertTrue(matcher2.match(")"));
+    assertTrue(matcher2.match("*"));
+    assertTrue(matcher2.match("|"));
+    assertFalse(matcher2.match("aa"));
+  }
+  
+  @Test
+  public void testRange() throws InvalidRegexException{
+    Matcher matcher1 = new Matcher("[a-z]");
+    for(char c = 'a'; c <= 'z'; c++){
+      assertTrue(matcher1.match("" + c));
+    }
+    assertFalse(matcher1.match("A"));
+    assertFalse(matcher1.match("0"));
+    assertFalse(matcher1.match("aa"));
+   
+    Matcher matcher2 = new Matcher("[0-9]*");
+    assertTrue(matcher2.match(""));
+    for(int i = 0; i <= 9; i++){
+      assertTrue(matcher2.match("" + i));
+    }
+    assertTrue(matcher2.match("901"));
+    assertFalse(matcher2.match("a"));
+    
+    Matcher matcher3 = new Matcher("[0-Z][a-z]");
+    assertTrue(matcher3.match("Za"));
+    assertTrue(matcher3.match("9z"));
+    assertTrue(matcher3.match("Ao"));
+    assertFalse(matcher3.match(""));
+    assertFalse(matcher3.match("A"));
+    assertFalse(matcher3.match("AA"));
+  }
+
   private static void testRegexOnStrings(String regex, String [] validStrs, String [] invalidStrs) throws InvalidRegexException{
     Matcher matcher = new Matcher(regex);
     for(String validStr: validStrs){

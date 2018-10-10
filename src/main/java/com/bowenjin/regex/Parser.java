@@ -14,7 +14,9 @@ class Parser{
   private void advance(){
     currentToken = tokenizer.nextToken();
   }
-
+  private RuntimeException exception(String message){
+    return new RuntimeException(message);
+  }
   private RuntimeException exception(String expected, String found){
     return new RuntimeException("Expected " + expected + ", but found " + found);
   }
@@ -92,6 +94,12 @@ class Parser{
         consume(Token.Type.RIGHTPAREN);
         ret = factorTail(newState);
         break;
+      case LEFTBRACKET:
+        advance();
+        newState = charClass();
+        consume(Token.Type.RIGHTBRACKET);
+        ret = factorTail(newState);
+        break; 
       default:
         throw exception(Token.Type.CHAR, Token.Type.DOT, Token.Type.LEFTPAREN);
     }
@@ -104,6 +112,7 @@ class Parser{
       case CHAR:
       case DOT:
       case LEFTPAREN:
+      case LEFTBRACKET:
         right = factor();
         newState = NFAState.concat(left, right);
         return factorList(newState);
@@ -128,5 +137,50 @@ class Parser{
         break;
     } 
     return newState;
+  }
+
+  private NFAState charClass(){
+    NFAState left = element();
+    return elementTail(left, left.label1);   
+  }
+  
+  /**
+   * Assumes the currentToken is not of type Token.Type.DASH or of type Token.Type.RIGHTBRACKET;
+   */
+  private NFAState element(){
+    if(currentToken.type == Token.Type.RIGHTBRACKET || currentToken.type == Token.Type.DASH){
+      throw new RuntimeException("Expected any token except " + Token.Type.RIGHTBRACKET + 
+        " and " + Token.Type.DASH + " but found " + currentToken.type); 
+    }
+    NFAState ret = NFAState.regexChar(currentToken.value);
+    advance();
+    return ret;
+  }
+ 
+  private NFAState elementTail(NFAState left, char prevChar){
+    if(currentToken.type == Token.Type.RIGHTBRACKET){
+      return left;
+    }else if(currentToken.type == Token.Type.DASH){
+      advance();
+      char start = (char)(prevChar + 1);
+      char end = currentToken.value;
+      NFAState newState = left;
+      if(start > end){
+        throw new RuntimeException(String.format("Starting range character '%s' must be <= ending character '%s'", start + "", end + "")); 
+      }
+      for(char c = start; c <= end; c++){
+        NFAState right = NFAState.regexChar(c);
+        newState = NFAState.or(newState, right);
+      } 
+      advance();
+      if(currentToken.type == Token.Type.DASH){
+        throw new RuntimeException("Expected non DASH token, but found DASH token");
+      }
+      return elementTail(newState, (char)0); //the prevChar will never be used   
+    }else{
+      NFAState right = element();
+      NFAState newState = NFAState.or(left, right);
+      return elementTail(newState, right.label1);
+    }
   }
 }
